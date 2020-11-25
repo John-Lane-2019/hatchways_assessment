@@ -6,7 +6,7 @@ connection = sqlite3.connect('c:\\assessment\\assessment.db') #connect to sqlite
 cursor = connection.cursor() # create cursor object
 
 def createDB():
-    #set file path variables
+    #set file path variables, YOU MAY HAVE TO CUSTOMIZE THE FILE PATHS IF YOU DON'T DROP THE "assessment" FOLDER ON YOUR C DRIVE.
     marksFilePath = r'C:\\assessment\\marks.csv'
     coursesFilePath = r'C:\\assessment\\courses.csv'
     studentsFilePath = r'C:\\assessment\\students.csv'
