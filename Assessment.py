@@ -67,8 +67,89 @@ def produceJSON():
     jsonFilePath = r'C:\\assessment\\assessment.json'
     
     student = {'id': '', 'name': '', 'totalAverage': 0.0, 'courses': []  }
+    bio = {'id': '', 'name': '', 'teacher': '', 'courseAverage': 0.0}
+    hist = {'id': '', 'name': '', 'teacher': '', 'courseAverage': 0.0}
+    math = {'id': '', 'name': '', 'teacher': '', 'courseAverage': 0.0}
     students = [] #drop the student dictionary objects in here. json object has to be enclosed with {}
+
+    #query student A's id
+    cursor.execute('SELECT id FROM students WHERE id = 1')
+    s_id = cursor.fetchone()[0]
+    student['id'] = s_id
+    #query student A's name
+    cursor.execute('SELECT name FROM students WHERE id = 1')
+    name = cursor.fetchone()[0]
+    student['name'] = name
+    #query student A's overall average
+    cursor.execute('SELECT ROUND(AVG(mark)) FROM marks WHERE student_id = 1')
+    totalAverage = cursor.fetchone()[0]
+    student['totalAverage'] = totalAverage
     
-    #TO DO
+    #query student A's biology average
+    cursor.execute('SELECT ROUND(AVG(mark)) FROM marks WHERE student_id = 1 AND test_id = 1 OR test_id = 2 OR test_id = 3' )
+    courseAverage = cursor.fetchone()[0]
+    bio['courseAverage'] = courseAverage
+    
+    #query bio course info
+    cursor.execute('SELECT * FROM courses WHERE id = 1')
+    bio_info = cursor.fetchone()
+    bio['id'] = bio_info[0]
+    bio['name'] = bio_info[1]
+    bio['teacher'] = bio_info[2]
+    #drop course object into student dictionary
+    student['courses'].append(bio)
+
+    #query student A's history average
+    cursor.execute('SELECT ROUND(AVG(mark)) FROM marks WHERE student_id = 1 AND test_id = 4 OR test_id = 5' )
+    courseAverage = cursor.fetchone()[0]
+    hist['courseAverage'] = courseAverage
+
+    #query history course info
+    cursor.execute('SELECT * FROM courses WHERE id = 2')
+    history_info = cursor.fetchone()
+    hist['id'] = history_info[0]
+    hist['name'] = history_info[1]
+    hist['teacher'] = history_info[2]
+    #drop course object into student dictionary
+    student['courses'].append(hist)
+
+    #query student A's math average
+    cursor.execute('SELECT ROUND(AVG(mark)) FROM marks WHERE student_id = 1 AND test_id = 6 OR test_id = 7' )
+    courseAverage = cursor.fetchone()[0]
+    math['courseAverage'] = courseAverage
+
+    #query math course info
+    cursor.execute('SELECT * FROM courses WHERE id = 3')
+    course_info = cursor.fetchone()
+    math['id'] = course_info[0]
+    math['name'] = course_info[1]
+    math['teacher'] = course_info[2]
+    student['courses'].append(math)
+    
+    #drop course object into student dictionary
+
+    students.append(student)
+
+    jsonObject = json.dumps(students, indent=4)# convert list to JSON object
+
+    print(jsonObject) #output to the console
+
+    with open(jsonFilePath, 'w') as outfile:
+        json.dump(students, outfile, indent=4) # write to file
+
+
+
+
+
+
+
+    
+    
+    
+
+    
+    
+
 
 createDB()
+produceJSON()
